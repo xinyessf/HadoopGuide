@@ -194,7 +194,7 @@ alter table t_order drop partition (partition_name='分区名') ##按照分区�
 ##看表结构
 desc t_order ;
 ##改表
-
+drop table mvtech_text_message.t_test_tactics
 ## 外部表创建
 create external table t_access(ip string,url string,access_time string)
 row format delimited
@@ -350,6 +350,18 @@ A.username=B.username
 where B.month <= A.month
 group by A.username,A.month
 order by A.username,A.month;
+
+```
+
+```shell
+CREATE EXTERNAL TABLE if NOT EXISTS mvtech_text_message.t_message_tactics (
+c_usernum string COMMENT '主叫号码',
+c_relatenum  string COMMENT '被叫号码',
+text_message  string COMMENT '短信内容',
+illage_type  string COMMENT '违规类型')
+partitioned by(day string,hour string)
+row format delimited fields terminated by ','
+location '/mx_projects/mvtech/mvtech_text_message';
 
 ```
 

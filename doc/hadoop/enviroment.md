@@ -90,6 +90,7 @@ http://hdp-01:50070
 /usr/local/hadoop-2.8.1/sbin/start-dfs.sh 
 ##集群关闭
 /usr/local/hadoop-2.8.1/sbin/stop-dfs.sh
+## 查看日志
 
 ```
 
@@ -123,10 +124,11 @@ hadoop fs -mv /hdfs的路径1  /hdfs的另一个路径2
 ##复制hdfs中的文件到hdfs的另一个目录
 hadoop fs -cp /hdfs路径_1  /hdfs路径_2
 ##删除hdfs中的文件或文件夹
-hadoop fs -rm -r /aaa
+hadoop fs -rm -r /out
 ##查看hdfs中的文本文件内容
-hadoop fs -cat /demo.txt
+hadoop fs -cat /out/bb.log
 hadoop fs -tail -f /demo.txt
+
 ```
 
 ### hive

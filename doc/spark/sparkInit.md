@@ -58,20 +58,29 @@ scp -r /usr/local/spark/conf/spark-env.sh  spark-02/usr/local/spark/conf/spark-e
 /usr/local/spark/sbin/start-all.sh
 /usr/local/spark/sbin/stop-all.sh
 #localhost:8080
+#192.168.73.132:8080
 ##提交第一个程序
-
 /usr/local/spark/bin/spark-submit --master spark://spark-01:7077 --class org.apache.spark.examples.SparkPi /usr/local/spark/examples/jars/spark-examples_2.12-3.0.0-preview2.jar 100
-####
+#### 计算π值
 /usr/local/spark/bin/spark-submit --master spark://spark-01:7077 --class org.apache.spark.examples.SparkPi --executor-memory 2048mb --total-executor-cores 12 /usr/local/spark/examples/jars/spark-examples_2.12-3.0.0-preview2.jar 100
 ####
 ##spark-shell
 /usr/local/spark/bin/spark-shell --master spark://spark-01:7077
 ##
 sc.textFile("hdfs://192.168.73.128:9000/aa.log").flatMap(_.split(" "))
-.map((_,1)).reduceByKey(_+_).saveAsTextFile("hdfs:///192.168.73.128:9000/out")
+.map((_,1)).reduceByKey(_+_).saveAsTextFile("hdfs://192.168.73.128:9000/out/bb.log")
 ##
 sc.textFile("hdfs://node1.edu360.cn:9000/words.txt").flatMap(_.split(" "))
 .map((_,1)).reduceByKey(_+_).saveAsTextFile("hdfs://node1.edu360.cn:9000/out")
 ##
+##编辑
+hadoop fs -cat /aa.log
+hadoop fs -rm -r /aa.log
+```
+
+### 项目启动
+
+```
+/usr/local/spark/bin/spark-submit --master spark://spark-01:7077 --class com.mvtech.unfraud.Starter /prj/unfraud.jar 100
 ```
 

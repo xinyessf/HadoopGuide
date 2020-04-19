@@ -15,7 +15,7 @@ vi /etc/udev/rules.d/70-persistent-ipoib.rules
 //2.修改ip
 vi /etc/sysconfig/network-scripts/ifcfg-eth0
 MAC地址:
-00:50:56:3a:da:fe
+00:50:56:33:5E:B5
 00:50:56:27:70:52
 00:50:56:2a:af:c2
 00:50:56:36:39:FA
@@ -54,7 +54,11 @@ scp /root/.ssh/authorized_keys root@hdp-04:~/.ssh
 scp /root/.ssh/authorized_keys root@spark-02:~/.ssh
 ```
 
-```
+```shell
+vi /etc/sysconfig/network-scripts/ifcfg-eth0
+00:50:56:3A:E7:8F
+00:50:56:3A:E7:8F
+###
 #DEVICE="eth0"
 BOOTPROTO="static"
 HWADDR="00:0C:29:ED:85:FE"
