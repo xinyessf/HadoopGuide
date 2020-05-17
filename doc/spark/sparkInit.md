@@ -62,7 +62,7 @@ scp -r /usr/local/spark/conf/spark-env.sh  spark-02/usr/local/spark/conf/spark-e
 ##提交第一个程序
 /usr/local/spark/bin/spark-submit --master spark://spark-01:7077 --class org.apache.spark.examples.SparkPi /usr/local/spark/examples/jars/spark-examples_2.12-3.0.0-preview2.jar 100
 #### 计算π值
-/usr/local/spark/bin/spark-submit --master spark://spark-01:7077 --class org.apache.spark.examples.SparkPi --executor-memory 2048mb --total-executor-cores 12 /usr/local/spark/examples/jars/spark-examples_2.12-3.0.0-preview2.jar 100
+/usr/local/spark/bin/spark-submit --master spark://spark-01:7077 --class org.apache.spark.examples.SparkPi --executor-memory 4096mb --total-executor-cores 12 /usr/local/spark/examples/jars/spark-examples_2.12-3.0.0-preview2.jar 100
 ####
 ##spark-shell
 /usr/local/spark/bin/spark-shell --master spark://spark-01:7077
@@ -84,3 +84,4 @@ hadoop fs -rm -r /aa.log
 /usr/local/spark/bin/spark-submit --master spark://spark-01:7077 --class com.mvtech.unfraud.Starter /prj/unfraud.jar 100
 ```
 
+###

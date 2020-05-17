@@ -86,7 +86,7 @@ hadoop-daemon.sh start namenode
 #####启动完后，首先用jps查看一下namenode的进程是否存在
 ##8.访问
 http://hdp-01:50070
-##集群启动
+##集群启动 ,需要3台,配置文件了3台
 /usr/local/hadoop-2.8.1/sbin/start-dfs.sh 
 ##集群关闭
 /usr/local/hadoop-2.8.1/sbin/stop-dfs.sh
@@ -109,246 +109,112 @@ scp /root/.ssh/authorized_keys root@hdp-03:~/.ssh
 scp /root/.ssh/authorized_keys root@hdp-04:~/.ssh
 ```
 
-### 命令
+### 命令文件操作
 
 ```shell
+## 列表查看
+hadoop fs -ls /aaaa
 ##上传文件到hdfs中
 hadoop fs -put /本地文件  /aaa
-hadoop fs -put /aa.txt /aaa
+hadoop fs -put /demo/a.txt /wordcount/input
 ##下载文件到客户端本地磁盘
 hadoop fs -get /hdfs中的路径   /本地磁盘目录
 ##在hdfs中创建文件夹
-hadoop fs -mkdir  -p /aaa/xxx
+hadoop fs -mkdir  -p /wordcount/input
 ##移动hdfs中的文件（更名）
 hadoop fs -mv /hdfs的路径1  /hdfs的另一个路径2
 ##复制hdfs中的文件到hdfs的另一个目录
 hadoop fs -cp /hdfs路径_1  /hdfs路径_2
+hadoop fs -cp /wordcount/input/a.txt  /wordcount/input/b.txt
 ##删除hdfs中的文件或文件夹
-hadoop fs -rm -r /out
+hadoop fs -rm -r /ccc
+
 ##查看hdfs中的文本文件内容
 hadoop fs -cat /out/bb.log
+hadoop fs -cat /res.dat
 hadoop fs -tail -f /demo.txt
-
+##修改文件的权限
+hadoop fs -chown user:group /aaa
+hadoop fs -chmod 700 /aaa
+##追加内容到已存在的文件
+hadoop fs -appendToFile /本地文件   /hdfs中的文件
 ```
 
-### hive
-
-####hive安装
-
-[hive安装](https://blog.csdn.net/qq_36508766/article/details/81318996)
+### windows安装hadoop
 
 ```shell
-#hive 配置变量
-export HIVE_HOME=/usr/local/hive
-export PATH=$PATH:$HIVE_HOME/bin
-##刷新环境变量
-source /etc/profile
-##启动
-hive
+在windows开发环境中做一些准备工作：
+1、在windows的某个路径中解压一份windows版本的hadoop安装包
+2、将解压出的hadoop目录配置到windows的环境变量中：HADOOP_HOME
 ```
 
-**hive集群配置**
+### mapduce
 
-```
+>map阶段: 对maptask读到的一行数据如何处理
+>
+>reduce阶段: 对reducetask拿到的一组相同key的kv数据如何处理
 
-```
-
-#### 创建虚表
-
-```
-touch dual.txt
-echo 'X' >dual.txt
-load data local inpath '/hivedemo/dual.txt' overwrite into table dual;
-select 'a' from dual;
-```
-
-
-
-#### hive常用命令
-
-```mysql
-show databases;
-create database test_work; //新建一个测试库
-use test_work;
-craete table course(id string);
-insert into table course values("qq");
-exit
-#清屏
-!clear
-# hive 执行dfs 命令
-!dfs -lsr / ; hive 执行dfs命令 
-# 建库
-create database db_order ;
-#删除库
-drop database db_order ;
-## 建表
-use db_order;
-create table t_order(id string,create_time string,amount float,uid string)
-row format delimited
-fields terminated by ',';
-## 删除
-drop table t_order; ##删除表
-truncate table t_order; ##删除表数据
-alter table t_order drop partition (partition_name='分区名') ##按照分区删除
-##看表结构
-desc t_order ;
-##改表
-
-## 外部表创建
-create external table t_access(ip string,url string,access_time string)
-row format delimited
-fields terminated by ','
-location '/access/log';
-##分区表创建
-create table t_access(ip string,url string,access_time string)
-partitioned by(dt string)
-row format delimited
-fields terminated by ','
-location '/access/log';
-##导入数据
-load data local inpath '/aa.log' into table t_access partition(dt='20170804');
-##统计
-select count(*) from t_access where dt='20170804';
-select count(*) from t_access;
-##多个分区表
-create table t_partition(id int,name string,age int)
-partitioned by(department string,sex string,howold int)
-row format delimited fields terminated by ',';
-
-load data local inpath '/hivedemo/person.dat' into table t_partition partition(department='xiangsheng',sex='male',howold=20);
-###CAST建表
-create table t_user_2 like t_user;
-create table t_access_user 
-as
-select ip,url from t_access;
-#################数据导入导出########################
-方式1：导入数据的一种方式：
-手动用hdfs命令，将文件放入表目录；
-
-方式2：在hive的交互式shell中用hive命令来导入本地数据到表目录
-load data local inpath '/root/order.data.2' into table t_order;
-
-方式3：用hive命令导入hdfs中的数据文件到表目录
-load data inpath '/aaa/aa.log' into table t_access partition(dt='20170806');
-#################数据导入导出########################
-```
-
-#### 导入和导出
-
-```mysql
-#################数据导入导出########################
-方式1：导入数据的一种方式：
-手动用hdfs命令，将文件放入表目录；
-
-方式2：在hive的交互式shell中用hive命令来导入本地数据到表目录
-load data local inpath '/root/order.data.2' into table t_order;
-
-方式3：用hive命令导入hdfs中的数据文件到表目录
-load data inpath '/aaa/aa.log' into table t_access partition(dt='20170806');
-#################数据导入导出########################
-##############导出########################
-5.3.2.	将hive表中的数据导出到指定路径的文件
-1、将hive表中的数据导入HDFS的文件
-insert overwrite directory '/root/access-data'
-row format delimited fields terminated by ','
-select * from t_access;
-
-2、将hive表中的数据导入本地磁盘文件
-insert overwrite local directory '/root/access-data'
-row format delimited fields terminated by ','
-select * from t_access limit 100000;
-##############导出########################
-create table dual(dummy String);
+**配置启动**
 
 ```
 
-#### 常用内置函数
+## 修改yarn-site.xml
+<property>
+<name>yarn.resourcemanager.hostname</name>
+<value>hdp-01</value>
+</property>
+
+<property>
+<name>yarn.nodemanager.aux-services</name>
+<value>mapreduce_shuffle</value>
+</property>
+
+<property>
+<name>yarn.nodemanager.resource.memory-mb</name>
+<value>2048</value>
+</property>
+
+<property>
+<name>yarn.nodemanager.resource.cpu-vcores</name>
+<value>2</value>
+</property>
+
+```
+
+**copy到其它机器**
 
 ```shell
-##类型转换函数
-select cast("5" as int) from dual;
-select cast("2017-08-03" as date) ;
-select cast(current_timestamp as date);
-##时间函数
-select current_timestamp; 
-select current_date;
+scp yarn-site.xml hdp-02:$PWD
+scp yarn-site.xml hdp-03:$PWD
+scp yarn-site.xml hdp-04:$PWD
+### 在hadp-01 中启动和关闭
+/usr/local/hadoop-2.8.1/sbin/start-yarn.sh
+/usr/local/hadoop-2.8.1/sbin//stop-yarn.sh
 
 ```
 
-#### 自定义函数
+### 内存不够
 
-```
+```shell
+##
+lvs pvcreate /dev/sda3
+lvextend -L+1020Mib /dev/mapper/cl-root /dev/sda3
+## 
+vgextend cl-root /dev/sda4
+##
+lvextend -L+2G /dev/mapper/cl-root /dev/sda4
+##
+e2fsck -a /dev/mapper/cl-root
 
-```
-
-#### 案例
-
-```
-create table t_access_times(username string,month string,counts int)
-row format delimited fields terminated by ',';
-
-load data local inpath '/hivedemo/accumulate.dat' into table t_access_times;
-
-A,2015-01,5
-A,2015-01,15
-B,2015-01,5
-A,2015-01,8
-B,2015-01,25
-A,2015-01,5
-C,2015-01,10
-
-1、第一步，先求个用户的月总金额
-select username,month,sum(salary) as salary from t_access_times group by username,month
-
-+-----------+----------+---------+--+
-| username  |  month   | salary  |
-+-----------+----------+---------+--+
-| A         | 2015-01  | 33      |
-| A         | 2015-02  | 10      |
-| B         | 2015-01  | 30      |
-| B         | 2015-02  | 15      |
-+-----------+----------+---------+--+
-
-2、第二步，将月总金额表自己连接 自己连接
-select A.*,B.* FROM
-(select username,month,sum(salary) as salary from t_access_times group by username,month) A 
-inner join 
-(select username,month,sum(salary) as salary from t_access_times group by username,month) B
-on
-A.username=B.username
-where B.month <= A.month
-+-------------+----------+-----------+-------------+----------+-----------+--+
-| a.username  | a.month  | a.salary  | b.username  | b.month  | b.salary  |
-+-------------+----------+-----------+-------------+----------+-----------+--+
-| A           | 2015-01  | 33        | A           | 2015-01  | 33        |
-| A           | 2015-01  | 33        | A           | 2015-02  | 10        |
-| A           | 2015-02  | 10        | A           | 2015-01  | 33        |
-| A           | 2015-02  | 10        | A           | 2015-02  | 10        |
-| B           | 2015-01  | 30        | B           | 2015-01  | 30        |
-| B           | 2015-01  | 30        | B           | 2015-02  | 15        |
-| B           | 2015-02  | 15        | B           | 2015-01  | 30        |
-| B           | 2015-02  | 15        | B           | 2015-02  | 15        |
-+-------------+----------+-----------+-------------+----------+-----------+--+
-
-
-第3步：
-select auname,amonth,acnts,sum(bcnts)
-from t_tmp2
-group by auname,amonth,acnts;
-得到最终结果
-
-当然，也可以把整个逻辑过程写成一个SQL语句：
-
-select A.username,A.month,max(A.salary) as salary,sum(B.salary) as accumulate
-from 
-(select username,month,sum(salary) as salary from t_access_times group by username,month) A 
-inner join 
-(select username,month,sum(salary) as salary from t_access_times group by username,month) B
-on
-A.username=B.username
-where B.month <= A.month
-group by A.username,A.month
-order by A.username,A.month;
-
+##
+resize2fs /dev/mapper/cl-root
+xfs_info /dev/sda4
+##
+xfs_growdfs /dev/sda3
+##  查看整体
+du -h
+## 查看文件
+du -ah --max-depth=1  / 
+du -lh --max-depth=1
 ```
 

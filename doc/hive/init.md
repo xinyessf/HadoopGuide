@@ -146,6 +146,10 @@ export PATH=$PATH:$HIVE_HOME/bin
 source /etc/profile
 ##启动
 hive
+## 后台启动
+nohup /usr/local/hive/bin  bin/hiveserver2 1>/dev/null 2>&1 &
+## 连接
+
 ```
 
 **hive集群配置**
@@ -182,7 +186,7 @@ exit
 create database db_order ;
 #删除库
 drop database db_order ;
-## 建表
+## 建表,
 use db_order;
 create table t_order(id string,create_time string,amount float,uid string)
 row format delimited
@@ -206,8 +210,11 @@ partitioned by(dt string)
 row format delimited
 fields terminated by ','
 location '/access/log';
+'1.2.3.4','www.baidu.com','2020-04-11','20200405'
+'1.2.3.4','www.baidu.com','2020-04-11','20200422'
 ##导入数据
-load data local inpath '/aa.log' into table t_access partition(dt='20170804');
+load data local inpath '/hivedemo/t_access.log' into table t_access partition(dt='20170804');
+load data local inpath 'F://wordcount//spark//t_access.log' into table t_access partition(dt='20170804');
 ##统计
 select count(*) from t_access where dt='20170804';
 select count(*) from t_access;
