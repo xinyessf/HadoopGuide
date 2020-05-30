@@ -86,3 +86,11 @@
 
 ```
 
+### 本地跑spark
+
+[配置spark]([https://blog.csdn.net/weixin_34315485/article/details/93311143](https://blog.csdn.net/weixin_34315485/article/details/93311143))
+
+```
+//报错
+
+```

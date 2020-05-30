@@ -2,6 +2,7 @@
 
 ```
 netstat -ntlp 
+00:50:56:28:7D:E4
 ```
 
 **windows**
@@ -181,7 +182,7 @@ hadoop fs -appendToFile /本地文件   /hdfs中的文件
 
 ```
 
-**copy到其它机器**
+### yarn启动
 
 ```shell
 scp yarn-site.xml hdp-02:$PWD
@@ -190,7 +191,6 @@ scp yarn-site.xml hdp-04:$PWD
 ### 在hadp-01 中启动和关闭
 /usr/local/hadoop-2.8.1/sbin/start-yarn.sh
 /usr/local/hadoop-2.8.1/sbin//stop-yarn.sh
-
 ```
 
 ### 内存不够
