@@ -27,7 +27,7 @@ MAC地址:
 00:50:56:36:39:FA
 --------
 spark
-00:50:56:3E:EC:68
+00:50:56:2E:24:38
 ----
 ip
 getway
@@ -37,6 +37,9 @@ NETWORKING=yes
 HOSTNAME=hdp-03
 ##关闭防火墙
 systemctl stop firewalld.service
+##
+C:\Windows\System32\drivers\etc\hosts
+ipconfig /flushdns
 ```
 
 ### ssh无密码连接
@@ -58,6 +61,8 @@ scp /root/.ssh/authorized_keys root@hdp-03:~/.ssh
 scp /root/.ssh/authorized_keys root@hdp-04:~/.ssh
 ##
 scp /root/.ssh/authorized_keys root@spark-02:~/.ssh
+
+scp /root/.ssh/authorized_keys root@node-136:~/.ssh
 ```
 
 ```shell
