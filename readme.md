@@ -20,7 +20,7 @@
 
 ### hbase
 
-[hbase入门了解]()
+[hbase入门了解](doc/hbase/hbase入门.md)
 
 ### Spark
 
@@ -40,11 +40,18 @@
 192.168.73.130   hadoop zookeeper  kafka	        mysql redis vue
 192.168.73.132   spark
 192.168.73.133   spark
-192.168.73.134   hbase
-192.168.73.135   hbase 
+192.168.73.134   hbase  es
+192.168.73.135   hbase  es
+192.168.73.136   es
 ```
 
+### 删除日志
 
+```shell
+ ## es
+ cd /usr/local/bigdata/elasticsearch-7.6.0/logs
+##
+```
 
 
 

@@ -11,6 +11,7 @@
 ```
 //1.设置不同ip
 //2.修改配置
+00:50:56:29:B5:EE
 ```
 
 ### vm如何配置
@@ -27,7 +28,7 @@ MAC地址:
 00:50:56:36:39:FA
 --------
 spark
-00:50:56:2E:24:38
+00:50:56:20:99:6C
 ----
 ip
 getway
@@ -37,6 +38,15 @@ NETWORKING=yes
 HOSTNAME=hdp-03
 ##关闭防火墙
 systemctl stop firewalld.service
+systemctl stop firewalld.service
+systemctl disable firewalld.service
+chkconfig iptables off
+systemctl stop firewalld
+service  iptables stop
+systemctl disable firewalld
+chkconfig iptables off
+systemctl stop firewalld
+sytemctl disable firewalld
 ##
 C:\Windows\System32\drivers\etc\hosts
 ipconfig /flushdns
