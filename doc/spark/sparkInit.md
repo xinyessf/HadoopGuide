@@ -84,4 +84,14 @@ hadoop fs -rm -r /aa.log
 /usr/local/spark/bin/spark-submit --master spark://spark-01:7077 --class com.mvtech.unfraud.Starter /prj/unfraud.jar 100
 ```
 
-###
+### 大数据组件了解
+
+如图
+
+![img](img/1.jpg)
+
+
+
+
+
+###hel
