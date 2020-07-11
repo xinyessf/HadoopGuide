@@ -26,6 +26,12 @@
 
 [hadoop集群搭建](doc/spark/sparkInit.md)
 
+[rdd学习](doc/spark/RDD.md)
+
+[spark sql](doc/spark/spark操作库.md)
+
+[开发实站](doc/spark/开发实战.md)
+
 ### flume
 
 [hadoop集群搭建](doc/flume/flume入门.md)
@@ -33,8 +39,6 @@
 ### scala
 
 [scala编程语法](doc/scala/init.md)
-
-
 
 ## 集群安装情况
 
@@ -49,6 +53,8 @@
 192.168.73.134   hbase  es
 192.168.73.135   hbase  es
 192.168.73.136   es
+192.168.73.138  hainan-01
+192.168.73.139  hainan-02
 ```
 
 ### 删除日志

@@ -92,7 +92,6 @@ http://hdp-01:50070
 ##集群关闭
 /usr/local/hadoop-2.8.1/sbin/stop-dfs.sh
 ## 查看日志
-
 ```
 
 **如何配置SSH免密登录**
@@ -190,7 +189,7 @@ scp yarn-site.xml hdp-03:$PWD
 scp yarn-site.xml hdp-04:$PWD
 ### 在hadp-01 中启动和关闭
 /usr/local/hadoop-2.8.1/sbin/start-yarn.sh
-/usr/local/hadoop-2.8.1/sbin//stop-yarn.sh
+/usr/local/hadoop-2.8.1/sbin/stop-yarn.sh
 ```
 
 ### 内存不够

@@ -661,7 +661,6 @@ def main(args: Array[String]): Unit = {
       }
     )
     while(res.hasNext)  res.next()
-
   }
 ```
 
@@ -697,7 +696,6 @@ object Lesson05_case_class {
       case x:Int => s"$x...is int"
       case _ => "none"
     }
-
     println(xxx(44))
     println(xxx("hello"))
     println(xxx("hi"))
@@ -730,7 +728,6 @@ object Lesson05_case_class {
       val iter: util.Iterator[T] = list.iterator()
       while (iter.hasNext) f(iter.next())
     }
-
   }
 ```
 
@@ -826,21 +823,17 @@ def main(args: Array[String]): Unit = {
 
 #### wordcount
 
-```
+```scala
 def main(args: Array[String]): Unit = {
-
     val conf = new SparkConf()
     conf.setAppName("wordcount")
     conf.setMaster("local")  //单击本地运行
-
     val sc = new SparkContext(conf)
     //单词统计
     //DATASET
 //    val fileRDD: RDD[String] = sc.textFile("bigdata-spark/data/testdata.txt",16)
     //hello world
-
 //    fileRDD.flatMap(  _.split(" ") ).map((_,1)).reduceByKey(  _+_   ).foreach(println)
-
     val fileRDD: RDD[String] = sc.textFile("bigdata-spark/data/testdata.txt")
     //hello world
     val words: RDD[String] = fileRDD.flatMap((x:String)=>{x.split(" ")})
@@ -850,25 +843,29 @@ def main(args: Array[String]): Unit = {
     //(hello,1)
     //(hello,1)
     //(world,1)
-    val res: RDD[(String, Int)] = pairWord.reduceByKey(  (x:Int,y:Int)=>{x+y}   )
+    val res: RDD[(String, Int)] = pairWord.reduceByKey(  (x:Int,y:Int)=>{x+y})
     //X:oldValue  Y:value
     //(hello,2)  -> (2,1)
     //(world,1)   -> (1,1)
     //(msb,2)   -> (2,1)
-
     val fanzhuan: RDD[(Int, Int)] = res.map((x)=>{  (x._2,1)  })
     val resOver: RDD[(Int, Int)] = fanzhuan.reduceByKey(_+_)
-
-
     resOver.foreach(println)
     res.foreach(println)
-
-
-
-
     Thread.sleep(Long.MaxValue)
-
-
   }
+```
+
+#### scala中特殊字符
+
+[scala特殊字符使用](https://blog.csdn.net/pengyajie/article/details/72420419)
+
+``` shell
+  _+_   ##reduceByKey((x,y)=> x + y)
+  ._
+## _N 用于访问元组中的数据元素,坐标从1开始
+  println("one = " + c._1)
+  println("two = " + c._2)
+###下划线相关  通配符
 ```
 
