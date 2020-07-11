@@ -20,6 +20,9 @@
 192.168.73.132	spark-01
 192.168.73.133	spark-02  00:50:56:3F:AC:C7
 192.168.73.134	spark-03
+--- ip 进行了修改在 128 129上
+scp -r /root/sparkApp  192.168.73.128:/root/sparkApp 
+
 ```
 
 ####安装配置
@@ -27,7 +30,7 @@
 [spark安装](https://blog.csdn.net/kangaroojie/article/details/80831993)
 
 ```shell
-tar -zxvf spark-3.0.0-preview2-bin-hadoop2.7 -C /usr/local
+tar -zxvf spark-3.0.0-preview2-bin-hadoop2.7.tgz -C /usr/local
 cd /usr/local/spark
 ##修改spark-env.sh.template
 cd conf/
@@ -48,11 +51,12 @@ vi slaves
 spark-02
 spark-03
 ##配置环境变量
+vi /etc/profile
 export SPARK_HOME=/usr/local/spark
 export PATH=${PATH}:${SPARK_HOME}/bin
 ##将配置好的Spark拷贝到其他节点上
-scp -r /usr/local/spark spark-02/usr/local/spark
-scp -r /usr/local/spark spark-03/usr/local/spark
+scp -r /usr/local/spark hdp-02:/usr/local/spark
+scp -r /usr/local/spark spark-03:/usr/local/spark
 scp -r /usr/local/spark/conf/spark-env.sh  spark-02/usr/local/spark/conf/spark-env.sh
 ##Spark集群配置完毕
 /usr/local/spark/sbin/start-all.sh
@@ -80,8 +84,25 @@ hadoop fs -rm -r /aa.log
 
 ### 项目启动
 
-```
+```shell
 /usr/local/spark/bin/spark-submit --master spark://spark-01:7077 --class com.mvtech.unfraud.Starter /prj/unfraud.jar 100
+
+/usr/local/spark/bin/spark-submit --master spark://spark-01:7077 --class com.mvtech.unfraud.Starter /prj/unfraud.jar 100
+
+/usr/local/spark/bin/spark-submit --master spark://spark-01:7077 --class org.apache.spark.examples.SparkPi --executor-memory 4096mb --total-executor-cores 12 /root/sparkApp/spark-examples_2.12-3.0.0-preview2.jar 100
+### 128
+/usr/local/spark/bin/spark-submit --master spark://hdp-01:7077 --class org.apache.spark.examples.SparkPi --executor-memory 4096mb --total-executor-cores 12 /usr/local/spark/examples/jars/spark-examples_2.12-3.0.0-preview2.jar 100
+
+/usr/local/spark/bin/spark-submit --master yarn --executor-cores 2 --num-executors 6 --driver-memory 4G --executor-memory 8G --conf spark.files.ignoreCorruptFiles=true --class com.mvtech.mess.Starter /usr/sparkApp/mvtech-push-local.jar 100
+
+--master yarn --executor-cores 2 --num-executors 6 --driver-memory 4G --executor-memory 8G --conf spark.files.ignoreCorruptFiles=true
+
+##
+vi /home/mx_projects/mvtech_admin/iaf/pro_files/mvtech_mess/mess.properties
+
+
+export HADOOP_CONF_DIR=/usr/local/hadoop-2.8.1/etc/hadoop/
+
 ```
 
 ### 大数据组件了解
