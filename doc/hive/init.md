@@ -181,9 +181,11 @@ export PATH=$PATH:$HIVE_HOME/bin
 source /etc/profile
 ##启动
 hive
+hiveserver2
 ## 后台启动
 nohup /usr/local/hive/bin  bin/hiveserver2 1>/dev/null 2>&1 &
 ## 连接
+## 
 ```
 
 ### hive的架构
@@ -590,6 +592,10 @@ create table dual(dummy String);
 
 ```
 
+##### hive 表分区修该
+
+[hive表分区修该](https://www.cnblogs.com/ggjucheng/archive/2013/01/03/2843393.html)
+
 #### Hive DML
 
 #####插入数据
@@ -852,5 +858,13 @@ illage_type  string COMMENT '违规类型')
 partitioned by(day string,hour string)
 row format delimited fields terminated by ','
 location '/mx_projects/mvtech/mvtech_text_message';
+```
+
+#### 实现方式
+
+>
+
+```
+https://www.cnblogs.com/ggjucheng/archive/2013/01/03/2843393.html
 ```
 

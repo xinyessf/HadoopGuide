@@ -36,7 +36,7 @@ val conf: SparkConf = new SparkConf().setMaster("local").setAppName("test01")
  
 ```
 
-##### 并集,交集,差集
+##### 并集,交集,差集,join连接
 
 >   面向数据集开发  面向数据集的API  1，基础API   2，复合API
 >    RDD  （HadoopRDD,MappartitionsRDD,ShuffledRDD...）
@@ -76,7 +76,7 @@ val conf: SparkConf = new SparkConf().setMaster("local").setAppName("test01")
    rdd1.map()
    rdd2.map()
    unitRDD.foreach(println)
-
+ // cogroup
     val kv1: RDD[(String, Int)] = sc.parallelize(List(
       ("zhangsan", 11),
       ("zhangsan", 12),
@@ -102,5 +102,88 @@ val conf: SparkConf = new SparkConf().setMaster("local").setAppName("test01")
    val full: RDD[(String, (Option[Int], Option[Int]))] = kv1.fullOuterJoin(kv2)
    full.foreach(println)
 
+```
+
+#### 统计sort 
+
+#####统计uv,pv
+
+```scala
+val conf: SparkConf = new SparkConf().setMaster("local").setAppName("sort")
+    val sc = new SparkContext(conf)
+    sc.setLogLevel("ERROR")
+
+    //PV,UV
+    //需求：根据数据计算各网站的PV,UV，同时，只显示top5
+    //解题：要按PV值，或者UV值排序，取前5名
+
+    val file: RDD[String] = sc.textFile("file///E:\\MySummaryStudy\\big-data-soa\\big-data-spark\\data\\pvuvdata",5)
+
+    //pv：
+    //  187.144.73.116	浙江	2018-11-12	1542011090255	3079709729743411785	www.jd.com	Comment
+    println("----------PV:-----------")
+    val pair: RDD[(String, Int)] = file.map(line=>  (line.split("\t")(5),1)    )
+    val reduce: RDD[(String, Int)] = pair.reduceByKey(_+_)
+    val map: RDD[(Int, String)] = reduce.map(_.swap)
+    val sorted: RDD[(Int, String)] = map.sortByKey(false)
+    val res: RDD[(String, Int)] = sorted.map(_.swap)
+    val pv: Array[(String, Int)] = res.take(5)
+    pv.foreach(println)
+
+    println("----------UV:-----------")
+
+    //  187.144.73.116	浙江	2018-11-12	1542011090255	3079709729743411785	www.jd.com	Comment
+
+    val keys: RDD[(String, String)] = file.map(
+      line => {
+        val strs: Array[String] = line.split("\t")
+        (strs(5), strs(0))
+      }
+    )
+    val key: RDD[(String, String)] = keys.distinct()
+    val pairx: RDD[(String, Int)] = key.map(k => (k._1,1))
+    val uvreduce: RDD[(String, Int)] = pairx.reduceByKey(_+_)
+    val uvSorted: RDD[(String, Int)] = uvreduce.sortBy(_._2,false)
+    val uv: Array[(String, Int)] = uvSorted.take(5)
+    uv.foreach(println)
+    while(true){
+    }
+  }
+
+(www.jd.com,171.82.4.154)
+```
+
+### 分区器的使用
+
+>如/何定义一个分区器使用
+>
+>按照指定的分区器去使用,按照分区规则进行分区即可
+
+```scala
+//自定义分区器
+class SubjectParitioner(sbs: Array[String]) extends Partitioner {
+
+  //相当于主构造器（new的时候回执行一次）
+  //用于存放规则的一个map
+  val rules = new mutable.HashMap[String, Int]()
+  var i = 0
+  for(sb <- sbs) {
+    //rules(sb) = i
+    rules.put(sb, i)
+    i += 1
+  }
+
+  //返回分区的数量（下一个RDD有多少分区）
+  override def numPartitions: Int = sbs.length
+
+  //根据传入的key计算分区标号
+  //key是一个元组（String， String）
+  override def getPartition(key: Any): Int = {
+    //获取学科名称
+    val subject = key.asInstanceOf[(String, String)]._1
+    //根据规则计算分区编号
+    rules(subject)
+  }
+}
 ```
 

@@ -36,7 +36,7 @@ export PATH=$PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
 ```shell
 /usr/local/java/jdk/jdk1.8.0_144	
 ##环境变量复制到其他节点
-scp -r /etc/profile hdp-02:/etc/profile
+scp -r /test/ 192.168.73.129:/test
 scp -r /etc/profile hdp-03:/etc/profile
 scp -r /etc/profile hdp-04:/etc/profile
 ```
@@ -92,6 +92,9 @@ http://hdp-01:50070
 ##集群关闭
 /usr/local/hadoop-2.8.1/sbin/stop-dfs.sh
 ## 查看日志
+
+//HiveSelectResponseDTO parse = JsonUtils.parse(data, HiveSelectResponseDTO.class);
+
 ```
 
 **如何配置SSH免密登录**
@@ -114,13 +117,22 @@ scp /root/.ssh/authorized_keys root@hdp-04:~/.ssh
 ```shell
 ## 列表查看
 hadoop fs -ls /aaaa
+hdfs  fs -ls /aaa
 ##上传文件到hdfs中
 hadoop fs -put /本地文件  /aaa
 hadoop fs -put /demo/a.txt /wordcount/input
 ##下载文件到客户端本地磁盘
 hadoop fs -get /hdfs中的路径   /本地磁盘目录
+hadoop fs -get /exportdata/test1   /mvtech/
+hadoop fs -ls /exportdata/test1/
+hadoop fs -rm -r /exportdata/test1
+hadoop fs -rm -r -skipTrash /exportdata/test1
+##
+hadoop fs -get /aaa/   /mvtech/
+
 ##在hdfs中创建文件夹
 hadoop fs -mkdir  -p /wordcount/input
+hadoop fs -mkdir  -p /exportdata/
 ##移动hdfs中的文件（更名）
 hadoop fs -mv /hdfs的路径1  /hdfs的另一个路径2
 ##复制hdfs中的文件到hdfs的另一个目录
@@ -138,6 +150,9 @@ hadoop fs -chown user:group /aaa
 hadoop fs -chmod 700 /aaa
 ##追加内容到已存在的文件
 hadoop fs -appendToFile /本地文件   /hdfs中的文件
+
+-------------
+hadoop fs -get /exportdata   /本地磁盘目录
 ```
 
 ### windows安装hadoop
