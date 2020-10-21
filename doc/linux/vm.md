@@ -100,3 +100,10 @@ DNS2=8.8.8.8
 
 ```
 
+### 环境查看
+
+```
+vi /etc/sysconfig/network-scripts/ifcfg-eth0
+systemctl stop firewalld.service
+```
+
