@@ -116,3 +116,12 @@ export HADOOP_CONF_DIR=/usr/local/hadoop-2.8.1/etc/hadoop/
 
 
 ###hel
+
+>
+>
+>测试预留
+
+```
+
+```
+

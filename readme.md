@@ -6,11 +6,15 @@
 
 ### Hadoop
 
+[hive](doc/hive)
+
 [Hive了解](doc/hadoop/了解hadoop.md)
 
 [Hadoop集群搭建](doc/hadoop/enviroment.md)
 
 [Mapreduce入门](doc/hadoop/mapduce入门.md)
+
+[spark-hive使用](doc/hive/spark-hive.md)
 
 ### Hive
 
@@ -30,7 +34,7 @@
 
 [spark sql](doc/spark/spark操作库.md)
 
-[开发实站](doc/spark/开发实战.md)
+[开发实战](doc/spark/开发实战.md)
 
 ### flume
 

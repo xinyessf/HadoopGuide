@@ -232,3 +232,23 @@ du -ah --max-depth=1  /
 du -lh --max-depth=1
 ```
 
+### window
+
+```
+
+```
+
+### 运行第一个程序报错
+
+```
+The root scratch dir: /tmp/hive on HDFS should be writable. Current permissions are
+```
+
+[解决问题](https://blog.csdn.net/qq_37023928/article/details/106042071?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-1.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-1.control)
+
+```
+%HADOOP_HOME%\bin\winutils.exe chmod 777 E:\tmp\hive
+-- 配置hadoop 路径修改执行
+hadoop 的环境变量配置到hadoop路径即可
+```
+
