@@ -36,6 +36,8 @@
 
 [开发实战](doc/spark/开发实战.md)
 
+[spark启动命令说明](doc/spark/启动命令说明.md)
+
 ### flume
 
 [hadoop集群搭建](doc/flume/flume入门.md)
@@ -44,7 +46,7 @@
 
 [scala编程语法](doc/scala/init.md)
 
-## 集群安装情况
+###集群安装情况
 
 
 
